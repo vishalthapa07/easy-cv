@@ -1,7 +1,9 @@
+import About from "./components/about";
+
 export default function Home() {
   return (
     <div>
-      <h1>hello world</h1>
+      <About />
     </div>
   );
 }
