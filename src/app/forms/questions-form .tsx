@@ -2,7 +2,7 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
-type Inputs = {
+export type TInputs = {
   name: string;
   profession: string;
   short_intro: string;
@@ -11,14 +11,24 @@ type Inputs = {
   phone_number: string;
 };
 
-export default function QuestionsForm() {
+type Props = {
+  onDataChange: (data: TInputs) => void;
+};
+
+export default function QuestionsForm({ onDataChange }: Props) {
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  } = useForm<TInputs>();
+  const onSubmit: SubmitHandler<TInputs> = (data) => {
+    console.log(data);
+    onDataChange(data);
+    reset();
+    return null;
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -32,7 +42,7 @@ export default function QuestionsForm() {
             {...register("name", { required: true })}
             placeholder="Eg: xyz"
             id="name"
-            className="border border-gray-400 px-2 py-1 my-1 rounded-md w-full"
+            className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           <br />
           {errors.name && (
@@ -47,7 +57,7 @@ export default function QuestionsForm() {
             {...register("profession", { required: true })}
             placeholder="Eg: Software Developer"
             id="profession"
-            className="border border-gray-400 px-2 py-1 my-1 rounded-md w-full"
+            className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.profession && (
             <span className="text-red-500">*Profession is required</span>
@@ -61,7 +71,7 @@ export default function QuestionsForm() {
           <input
             {...register("short_intro", { required: true })}
             id="short_intro"
-            className="border border-gray-400 px-2 py-1 my-1 rounded-md w-full"
+            className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.short_intro && (
             <span className="text-red-500">*Short description is required</span>
@@ -77,7 +87,7 @@ export default function QuestionsForm() {
             })}
             placeholder="Eg: xyz@gmail.com"
             id="email"
-            className="border border-gray-400 px-2 py-1 my-1 rounded-md w-full"
+            className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.email && (
             <span className="text-red-500">*Email Address is required</span>
@@ -91,7 +101,7 @@ export default function QuestionsForm() {
           <input
             {...register("linkedin", { required: true })}
             id="linkedin"
-            className="border border-gray-400 px-2 py-1 my-1 rounded-md w-full"
+            className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.linkedin && (
             <span className="text-red-500">*LinkedIn profile is required</span>
@@ -105,7 +115,7 @@ export default function QuestionsForm() {
             {...register("phone_number", { required: true })}
             placeholder="Eg: +977 98xxxxxxxx"
             id="phone_number"
-            className="border border-gray-400 px-2 py-1 my-1 rounded-md w-full"
+            className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.phone_number && (
             <span className="text-red-500">*Phone Number is required</span>
@@ -113,7 +123,7 @@ export default function QuestionsForm() {
         </div>
         <button
           type="submit"
-          className="bg-red-500 hover:opacity-50 text-white px-4 py-2 rounded-full"
+          className="bg-red-500 text-white px-4 py-2 rounded-full"
         >
           Submit
         </button>
