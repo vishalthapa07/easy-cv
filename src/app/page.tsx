@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import QuestionsForm, { TInputs } from "./forms/questions-form ";
+import Resume1 from "./components/resume-1";
 
 export default function Home() {
-  const [data, setData] = useState(() => {
+  const [data, setData] = useState<TInputs>(() => {
     const userString = localStorage.getItem("user");
 
     return userString ? JSON.parse(userString) : {};
@@ -17,11 +18,11 @@ export default function Home() {
 
   return (
     <div className="flex gap-4 m-6">
-      <div className="w-1/2">
+      <div className="w-full">
         <QuestionsForm onDataChange={handleDataChange} />
       </div>
-      <div className="w-full">
-        <h1>{data.name}</h1>
+      <div>
+        <Resume1 data={data} />
       </div>
     </div>
   );

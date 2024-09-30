@@ -68,9 +68,10 @@ export default function QuestionsForm({ onDataChange }: Props) {
             Can you provide a short description about yourself?{" "}
             <span className="text-red-500">*</span>
           </label>
-          <input
+          <textarea
             {...register("short_intro", { required: true })}
             id="short_intro"
+            rows={4}
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.short_intro && (
