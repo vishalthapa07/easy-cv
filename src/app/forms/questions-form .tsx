@@ -32,7 +32,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="text-black p-6 border border-gray-400 rounded-lg">
+      <div className="text-black p-6 rounded-lg shadow-md">
         <div className="mb-4">
           <label htmlFor="name">
             What is your name? <span className="text-red-500">*</span>
@@ -124,7 +124,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
         </div>
         <button
           type="submit"
-          className="bg-red-500 text-white px-4 py-2 rounded-full"
+          className="bg-red-500 hover:opacity-70 text-white px-4 py-2 rounded-full"
         >
           Submit
         </button>
