@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { IoMdAddCircle } from "react-icons/io";
 
 export type TInputs = {
   name: string;
@@ -9,6 +11,7 @@ export type TInputs = {
   email: string;
   linkedin: string;
   phone_number: string;
+  skills: { skillName: string }[];
 };
 
 type Props = {
@@ -16,6 +19,8 @@ type Props = {
 };
 
 export default function QuestionsForm({ onDataChange }: Props) {
+  const [skills, setSkills] = useState([{ skillName: "" }]);
+
   const {
     register,
     handleSubmit,
@@ -23,11 +28,28 @@ export default function QuestionsForm({ onDataChange }: Props) {
     watch,
     formState: { errors },
   } = useForm<TInputs>();
+
   const onSubmit: SubmitHandler<TInputs> = (data) => {
+    data.skills = skills;
     console.log(data);
     onDataChange(data);
-    reset();
+    resetForm();
     return null;
+  };
+
+  const resetForm = () => {
+    reset();
+    setSkills([{ skillName: "" }]); // Reset skills
+  };
+
+  const addSkill = () => {
+    setSkills([...skills, { skillName: "" }]);
+  };
+
+  const handleSkillChange = (index: number, value: string) => {
+    const newSkills = [...skills];
+    newSkills[index].skillName = value;
+    setSkills(newSkills);
   };
 
   return (
@@ -121,6 +143,31 @@ export default function QuestionsForm({ onDataChange }: Props) {
           {errors.phone_number && (
             <span className="text-red-500">*Phone Number is required</span>
           )}
+        </div>
+        <div className="shadow-md rounded-md p-4 mb-4">
+          <label htmlFor="skills">
+            Please share your skills? <span className="text-red-500">*</span>
+          </label>
+          {skills.map((skill, index) => (
+            <div key={index} className="mb-1">
+              <input
+                value={skill.skillName}
+                onChange={(e) => handleSkillChange(index, e.target.value)}
+                placeholder="Eg: Microsoft Word"
+                id="skills"
+                className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+              />
+              {skill.skillName === "" && (
+                <span className="text-red-500 text-lg">*Skill is required</span>
+              )}
+            </div>
+          ))}
+          <div className="flex justify-center">
+            <IoMdAddCircle
+              className="text-red-500 hover:opacity-70 my-2 cursor-pointer"
+              onClick={addSkill}
+            />
+          </div>{" "}
         </div>
         <button
           type="submit"

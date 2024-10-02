@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { TInputs } from "../forms/questions-form ";
 import { useReactToPrint } from "react-to-print";
+import { FaDownload } from "react-icons/fa6";
 
 const Resume1 = ({ data }: { data: TInputs }) => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -8,15 +9,13 @@ const Resume1 = ({ data }: { data: TInputs }) => {
   return (
     <div className="relative">
       <div className="absolute top-3 right-3 hover:opacity-70">
-        <button
+        <FaDownload
           type="button"
-          className="bg-red-500 text-white px-4 py-2 rounded-full"
+          className="text-resumeBlack_1 text-lg animate-bounce"
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           onClick={reactToPrintFn}
-        >
-          Download
-        </button>
+        />
       </div>
       <div className="w-full bg-white rounded-lg shadow-md">
         <div
