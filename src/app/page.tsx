@@ -13,6 +13,24 @@ export default function Home() {
     linkedin: "",
     phone_number: "",
     skills: [{ skillName: "" }],
+    tools: [{ toolName: "" }],
+    experiences: [
+      {
+        position: "",
+        companyName: "",
+        joinedDate: "",
+        leftDate: "",
+        shortDescription: "",
+      },
+    ],
+    education: [
+      {
+        course: "",
+        institute: "",
+        startDate: "",
+        endDate: "",
+      },
+    ],
   });
 
   useEffect(() => {
@@ -38,9 +56,9 @@ export default function Home() {
       <div className="w-2/5">
         <QuestionsForm onDataChange={handleDataChange} />
       </div>
-      {/* <div className="w-full">
+      <div className="w-full">
         <Resume1 data={data} />
-      </div> */}
+      </div>
     </div>
   );
 }

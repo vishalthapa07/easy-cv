@@ -59,16 +59,14 @@ export default function QuestionsForm({ onDataChange }: Props) {
     },
   ]);
 
-  const [position, setPosition] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [joinedDate, setJoinedDate] = useState("");
-  const [leftDate, setLeftDate] = useState("");
+  const [course, setCourse] = useState("");
+  const [institute, setInstitute] = useState("");
+  const [startDate, setStartDate] = useState("");
 
   const {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm<TInputs>();
 
@@ -76,6 +74,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
     data.skills = skills;
     data.tools = tools;
     data.experiences = experiences;
+    data.education = educations;
     console.log(data);
     onDataChange(data);
     resetForm();
@@ -93,6 +92,14 @@ export default function QuestionsForm({ onDataChange }: Props) {
         joinedDate: "",
         leftDate: "",
         shortDescription: "",
+      },
+    ]);
+    setEducations([
+      {
+        course: "",
+        institute: "",
+        startDate: "",
+        endDate: "",
       },
     ]);
   };
@@ -130,6 +137,18 @@ export default function QuestionsForm({ onDataChange }: Props) {
     ]);
   };
 
+  const addEducation = () => {
+    setEducations([
+      ...educations,
+      {
+        course: "",
+        institute: "",
+        startDate: "",
+        endDate: "",
+      },
+    ]);
+  };
+
   const handleExperienceChange = (
     index: number,
     position: string,
@@ -145,6 +164,21 @@ export default function QuestionsForm({ onDataChange }: Props) {
     newExperiences[index].leftDate = leftDate;
     newExperiences[index].shortDescription = shortDescription;
     setExperiences(newExperiences);
+  };
+
+  const handleEducationChange = (
+    index: number,
+    course: string,
+    institute: string,
+    startDate: string,
+    endDate: string
+  ) => {
+    const newEducations = [...educations];
+    newEducations[index].course = course;
+    newEducations[index].institute = institute;
+    newEducations[index].startDate = startDate;
+    newEducations[index].endDate = endDate;
+    setEducations(newEducations);
   };
 
   return (
@@ -224,7 +258,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
             <span className="text-red-500">*LinkedIn profile is required</span>
           )}
         </div>
-        <div className="mb-4">
+        <div className="mb-8">
           <label htmlFor="phone_number" className="font-bold text-lg">
             Phone number <span className="text-red-500">*</span>
           </label>
@@ -238,7 +272,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
             <span className="text-red-500">*Phone Number is required</span>
           )}
         </div>
-        <div className="shadow-md rounded-md p-4 mb-4">
+        <div className="shadow-md rounded-md p-4 mb-8">
           <label htmlFor="skills" className="font-bold text-lg">
             Skills <span className="text-red-500">*</span>
           </label>
@@ -263,7 +297,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
             />
           </div>{" "}
         </div>
-        <div className="shadow-md rounded-md p-4 mb-4">
+        <div className="shadow-md rounded-md p-4 mb-8">
           <label htmlFor="tools" className="font-bold text-lg">
             Tools and Technology <span className="text-red-500">*</span>
           </label>
@@ -288,7 +322,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
             />
           </div>{" "}
         </div>
-        <div className="shadow-md rounded-md p-4 mb-4">
+        <div className="shadow-md rounded-md p-4 mb-8">
           <label htmlFor="experiences" className="font-bold text-lg">
             Experience <span className="text-red-500">*</span>
           </label>
@@ -373,6 +407,79 @@ export default function QuestionsForm({ onDataChange }: Props) {
             />
           </div>{" "}
         </div>
+
+        <div className="shadow-md rounded-md p-4 mb-8">
+          <label htmlFor="educations" className="font-bold text-lg">
+            Education <span className="text-red-500">*</span>
+          </label>
+          {educations.map((education, index) => (
+            <div key={index} className="my-4 p-6 rounded-lg shadow-md">
+              <input
+                value={education.course}
+                onChange={(e) => setCourse(e.target.value)}
+                placeholder="Enter your course"
+                id="educations"
+                className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+              />
+              {education.course === "" && (
+                <span className="text-red-500 text-lg">
+                  *Course is required
+                </span>
+              )}
+              <input
+                value={education.institute}
+                onChange={(e) => setInstitute(e.target.value)}
+                placeholder="Enter your institute"
+                id="educations"
+                className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+              />
+              {education.institute === "" && (
+                <span className="text-red-500 text-lg">
+                  *Institute is required
+                </span>
+              )}
+              <input
+                value={education.startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                placeholder="Enter your start date. Eg: 3rd October, 2024"
+                id="educations"
+                className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+              />
+              {education.startDate === "" && (
+                <span className="text-red-500 text-lg">
+                  *Start date is required
+                </span>
+              )}
+              <input
+                value={education.endDate}
+                onChange={(e) =>
+                  handleEducationChange(
+                    index,
+                    course,
+                    institute,
+                    startDate,
+                    e.target.value
+                  )
+                }
+                placeholder="Enter your left date. Eg: 3rd October, 2025"
+                id="educations"
+                className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+              />
+              {education.endDate === "" && (
+                <span className="text-red-500 text-lg">
+                  *End date is required
+                </span>
+              )}
+            </div>
+          ))}
+          <div className="flex justify-center">
+            <IoMdAddCircle
+              className="text-red-500 hover:opacity-70 my-2 cursor-pointer"
+              onClick={addEducation}
+            />
+          </div>{" "}
+        </div>
+
         <button
           type="submit"
           className="bg-red-500 hover:opacity-70 text-white px-4 py-2 rounded-full"
