@@ -10,6 +10,15 @@ const Resume1 = ({ data }: { data: TInputs }) => {
     contentRef,
     pageStyle: printPageStyle,
   });
+
+  if (!data.name) {
+    return (
+      <div className="font-medium text-neutral-700 dark:text-neutral-300 text-sm lg:text-base max-w-sm animate-pulse">
+        Please provide your information first
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       <div className="absolute top-3 right-3 hover:opacity-70">
