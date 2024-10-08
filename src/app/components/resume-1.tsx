@@ -15,7 +15,7 @@ const Resume1 = ({ data }: { data: TInputs }) => {
       <div className="absolute top-3 right-3 hover:opacity-70">
         <FaDownload
           type="button"
-          className="text-resumeBlack_1 text-lg animate-bounce"
+          className="text-resumeBlack_1 text-lg animate-bounce cursor-pointer"
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           onClick={reactToPrintFn}
@@ -23,7 +23,7 @@ const Resume1 = ({ data }: { data: TInputs }) => {
       </div>
       <div className="w-full bg-white rounded-lg shadow-md">
         <div ref={contentRef}>
-          <div className="grid grid-cols-2 gap-16 px-12 pt-12 pb-6 rounded-t-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 px-12 pt-12 rounded-t-lg">
             <div>
               <h1 className="font-semibold text-2xl text-resumeBlack_1 mb-2">
                 {data.name}
@@ -70,7 +70,7 @@ const Resume1 = ({ data }: { data: TInputs }) => {
               </h3>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-16 px-12 pb-12 pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 px-12 pb-12 pt-8">
             <div>
               <h2 className="font-medium text-sm text-resumeBlue_1 mb-4">
                 Work Experience
