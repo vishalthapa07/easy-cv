@@ -328,49 +328,49 @@ export default function QuestionsForm({ onDataChange }: Props) {
           {experiences.map((experience, index) => (
             <div key={index} className="my-4 p-6 rounded-lg shadow-md">
               <input
-                value={experience.position}
+                value={position}
                 onChange={(e) => setPosition(e.target.value)}
                 placeholder="Enter your position"
                 id="experiences"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {experience.position === "" && (
+              {position === "" && (
                 <span className="text-red-500 text-lg">
                   *Position is required
                 </span>
               )}
               <input
-                value={experience.companyName}
+                value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="Enter your company name"
                 id="experiences"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {experience.companyName === "" && (
+              {companyName === "" && (
                 <span className="text-red-500 text-lg">
                   *Company is required
                 </span>
               )}
               <input
-                value={experience.joinedDate}
+                value={joinedDate}
                 onChange={(e) => setJoinedDate(e.target.value)}
                 placeholder="Enter your joined date. Eg: 3rd October, 2024"
                 id="experiences"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {experience.joinedDate === "" && (
+              {joinedDate === "" && (
                 <span className="text-red-500 text-lg">
                   *Joined date is required
                 </span>
               )}
               <input
-                value={experience.leftDate}
+                value={leftDate}
                 onChange={(e) => setLeftDate(e.target.value)}
                 placeholder="Enter your left date. Eg: 3rd October, 2025"
                 id="experiences"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {experience.leftDate === "" && (
+              {leftDate === "" && (
                 <span className="text-red-500 text-lg">
                   *Left date is required
                 </span>
@@ -414,37 +414,37 @@ export default function QuestionsForm({ onDataChange }: Props) {
           {educations.map((education, index) => (
             <div key={index} className="my-4 p-6 rounded-lg shadow-md">
               <input
-                value={education.course}
+                value={course}
                 onChange={(e) => setCourse(e.target.value)}
                 placeholder="Enter your course"
                 id="educations"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {education.course === "" && (
+              {course === "" && (
                 <span className="text-red-500 text-lg">
                   *Course is required
                 </span>
               )}
               <input
-                value={education.institute}
+                value={institute}
                 onChange={(e) => setInstitute(e.target.value)}
                 placeholder="Enter your institute"
                 id="educations"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {education.institute === "" && (
+              {institute === "" && (
                 <span className="text-red-500 text-lg">
                   *Institute is required
                 </span>
               )}
               <input
-                value={education.startDate}
+                value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 placeholder="Enter your start date. Eg: 3rd October, 2024"
                 id="educations"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
-              {education.startDate === "" && (
+              {startDate === "" && (
                 <span className="text-red-500 text-lg">
                   *Start date is required
                 </span>
