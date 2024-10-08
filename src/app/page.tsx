@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import Resume1 from "./components/resume-1";
 import QuestionsForm, { TInputs } from "./forms/questions-form ";
 
+import React from "react";
+import { Timeline } from "./components/ui/timeline";
+
 export default function Home() {
   const [data, setData] = useState<TInputs>({
     name: "",
@@ -49,15 +52,39 @@ export default function Home() {
     localStorage.setItem("user", JSON.stringify(newData));
   };
 
-  console.log("data....", data);
+  const timelineData = [
+    {
+      title: "Form",
+      content: (
+        <div>
+          <QuestionsForm onDataChange={handleDataChange} />
+          <div className="grid grid-cols-2 gap-4"></div>
+        </div>
+      ),
+    },
+    {
+      title: "Resume Ready",
+      content: (
+        <div>
+          <Resume1 data={data} />
+          <div className="grid grid-cols-2 gap-4"></div>
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <div className="flex gap-4 m-6">
-      <div className="w-2/5">
-        <QuestionsForm onDataChange={handleDataChange} />
-      </div>
+    <div>
+      {/* <div className="flex gap-4 m-6">
+        <div className="w-2/5">
+          <QuestionsForm onDataChange={handleDataChange} />
+        </div>
+        <div className="w-full">
+          <Resume1 data={data} />
+        </div>
+      </div> */}
       <div className="w-full">
-        <Resume1 data={data} />
+        <Timeline data={timelineData} />
       </div>
     </div>
   );

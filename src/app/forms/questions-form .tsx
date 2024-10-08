@@ -75,7 +75,6 @@ export default function QuestionsForm({ onDataChange }: Props) {
     data.tools = tools;
     data.experiences = experiences;
     data.education = educations;
-    console.log(data);
     onDataChange(data);
     resetForm();
     return null;
@@ -183,7 +182,7 @@ export default function QuestionsForm({ onDataChange }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="text-black p-6 rounded-lg shadow-md">
+      <div className="text-black">
         <div className="mb-4">
           <label htmlFor="name" className="font-bold text-lg">
             Name <span className="text-red-500">*</span>
