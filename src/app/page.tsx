@@ -6,6 +6,7 @@ import QuestionsForm, { TInputs } from "./forms/questions-form ";
 
 import React from "react";
 import { Timeline } from "./components/ui/timeline";
+import { FloatingDockContact } from "./components/contact";
 
 export default function Home() {
   const [data, setData] = useState<TInputs>({
@@ -75,16 +76,11 @@ export default function Home() {
 
   return (
     <div>
-      {/* <div className="flex gap-4 m-6">
-        <div className="w-2/5">
-          <QuestionsForm onDataChange={handleDataChange} />
-        </div>
-        <div className="w-full">
-          <Resume1 data={data} />
-        </div>
-      </div> */}
       <div className="w-full">
         <Timeline data={timelineData} />
+      </div>
+      <div className="pb-12">
+        <FloatingDockContact />
       </div>
     </div>
   );
