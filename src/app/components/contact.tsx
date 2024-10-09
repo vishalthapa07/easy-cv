@@ -2,6 +2,7 @@ import React from "react";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FloatingDock } from "./ui/floating-dock";
+import { SiBuymeacoffee } from "react-icons/si";
 
 export function FloatingDockContact() {
   const links = [
@@ -18,6 +19,13 @@ export function FloatingDockContact() {
         <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "https://github.com/vishalthapa07",
+    },
+    {
+      title: "Buy me a Coffee",
+      icon: (
+        <SiBuymeacoffee className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "https://drive.google.com/file/d/1cOAy2gYoNb-OjkKNt3UBkemeanp1ohFm/view",
     },
   ];
   return (

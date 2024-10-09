@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { IoMdAddCircle } from "react-icons/io";
+import { IoMdAddCircle, IoMdRemoveCircle } from "react-icons/io";
 
 export type TInputs = {
   name: string;
@@ -33,42 +33,41 @@ type Props = {
 };
 
 export default function QuestionsForm({ onDataChange }: Props) {
-  const [skills, setSkills] = useState([{ skillName: "" }]);
-  const [tools, setTools] = useState([{ toolName: "" }]);
-  const [experiences, setExperiences] = useState([
-    {
-      position: "",
-      companyName: "",
-      joinedDate: "",
-      leftDate: "",
-      shortDescription: "",
-    },
-  ]);
-
-  const [position, setPosition] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [joinedDate, setJoinedDate] = useState("");
-  const [leftDate, setLeftDate] = useState("");
-
-  const [educations, setEducations] = useState([
-    {
-      course: "",
-      institute: "",
-      startDate: "",
-      endDate: "",
-    },
-  ]);
-
-  const [course, setCourse] = useState("");
-  const [institute, setInstitute] = useState("");
-  const [startDate, setStartDate] = useState("");
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<TInputs>();
+
+  const createEmptySkill = () => ({ skillName: "" });
+  const createEmptyTool = () => ({ toolName: "" });
+  const createEmptyExperience = (): TInputs["experiences"][number] => ({
+    position: "",
+    companyName: "",
+    joinedDate: "",
+    leftDate: "",
+    shortDescription: "",
+  });
+  const createEmptyEducation = (): TInputs["education"][number] => ({
+    course: "",
+    institute: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  const [skills, setSkills] = useState<{ skillName: string }[]>([
+    createEmptySkill(),
+  ]);
+  const [tools, setTools] = useState<{ toolName: string }[]>([
+    createEmptyTool(),
+  ]);
+  const [experiences, setExperiences] = useState<TInputs["experiences"]>([
+    createEmptyExperience(),
+  ]);
+  const [educations, setEducations] = useState<TInputs["education"]>([
+    createEmptyEducation(),
+  ]);
 
   const onSubmit: SubmitHandler<TInputs> = (data) => {
     data.skills = skills;
@@ -77,44 +76,27 @@ export default function QuestionsForm({ onDataChange }: Props) {
     data.education = educations;
     onDataChange(data);
     resetForm();
-    return null;
   };
 
   const resetForm = () => {
     reset();
-    setSkills([{ skillName: "" }]); // Reset skills
-    setTools([{ toolName: "" }]);
-    setExperiences([
-      {
-        position: "",
-        companyName: "",
-        joinedDate: "",
-        leftDate: "",
-        shortDescription: "",
-      },
-    ]);
-    setEducations([
-      {
-        course: "",
-        institute: "",
-        startDate: "",
-        endDate: "",
-      },
-    ]);
+    setSkills([createEmptySkill()]);
+    setTools([createEmptyTool()]);
+    setExperiences([createEmptyExperience()]);
+    setEducations([createEmptyEducation()]);
   };
 
-  const addSkill = () => {
-    setSkills([...skills, { skillName: "" }]);
-  };
+  const addSkill = () => setSkills([...skills, createEmptySkill()]);
+  const addTool = () => setTools([...tools, createEmptyTool()]);
+  const addExperience = () =>
+    setExperiences([...experiences, createEmptyExperience()]);
+  const addEducation = () =>
+    setEducations([...educations, createEmptyEducation()]);
 
   const handleSkillChange = (index: number, value: string) => {
     const newSkills = [...skills];
     newSkills[index].skillName = value;
     setSkills(newSkills);
-  };
-
-  const addTool = () => {
-    setTools([...tools, { toolName: "" }]);
   };
 
   const handleToolChange = (index: number, value: string) => {
@@ -123,89 +105,58 @@ export default function QuestionsForm({ onDataChange }: Props) {
     setTools(newTools);
   };
 
-  const addExperience = () => {
-    setExperiences([
-      ...experiences,
-      {
-        position: "",
-        companyName: "",
-        joinedDate: "",
-        leftDate: "",
-        shortDescription: "",
-      },
-    ]);
-  };
-
-  const addEducation = () => {
-    setEducations([
-      ...educations,
-      {
-        course: "",
-        institute: "",
-        startDate: "",
-        endDate: "",
-      },
-    ]);
-  };
-
   const handleExperienceChange = (
     index: number,
-    position: string,
-    companyName: string,
-    joinedDate: string,
-    leftDate: string,
-    shortDescription: string
+    updatedExperience: TInputs["experiences"][number]
   ) => {
     const newExperiences = [...experiences];
-    newExperiences[index].position = position;
-    newExperiences[index].companyName = companyName;
-    newExperiences[index].joinedDate = joinedDate;
-    newExperiences[index].leftDate = leftDate;
-    newExperiences[index].shortDescription = shortDescription;
+    newExperiences[index] = updatedExperience;
     setExperiences(newExperiences);
   };
 
   const handleEducationChange = (
     index: number,
-    course: string,
-    institute: string,
-    startDate: string,
-    endDate: string
+    updatedEducation: TInputs["education"][number]
   ) => {
     const newEducations = [...educations];
-    newEducations[index].course = course;
-    newEducations[index].institute = institute;
-    newEducations[index].startDate = startDate;
-    newEducations[index].endDate = endDate;
+    newEducations[index] = updatedEducation;
     setEducations(newEducations);
+  };
+
+  const removeField = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setState: React.Dispatch<React.SetStateAction<any[]>>,
+    index: number
+  ) => {
+    setState((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="text-black">
+        {/* Basic Info Fields */}
         <div className="mb-4">
           <label htmlFor="name" className="font-bold text-lg">
             Name <span className="text-red-500">*</span>
           </label>
-          <br />
           <input
             {...register("name", { required: true })}
             placeholder="Eg: xyz"
             id="name"
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
-          <br />
           {errors.name && (
             <span className="text-red-500">*Name is required</span>
           )}
         </div>
+
         <div className="mb-4">
           <label htmlFor="profession" className="font-bold text-lg">
             Profession <span className="text-red-500">*</span>
           </label>
           <input
             {...register("profession", { required: true })}
-            placeholder="Eg: Software Developer"
+            placeholder="Eg: Software Engineer"
             id="profession"
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
@@ -213,66 +164,71 @@ export default function QuestionsForm({ onDataChange }: Props) {
             <span className="text-red-500">*Profession is required</span>
           )}
         </div>
+
         <div className="mb-4">
           <label htmlFor="short_intro" className="font-bold text-lg">
-            Short description about yourself{" "}
-            <span className="text-red-500">*</span>
+            Short Introduction <span className="text-red-500">*</span>
           </label>
           <textarea
             {...register("short_intro", { required: true })}
+            placeholder="A brief introduction about yourself"
             id="short_intro"
-            rows={4}
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.short_intro && (
-            <span className="text-red-500">*Short description is required</span>
+            <span className="text-red-500">*Short intro is required</span>
           )}
         </div>
+
         <div className="mb-4">
           <label htmlFor="email" className="font-bold text-lg">
-            Email address <span className="text-red-500">*</span>
+            Email <span className="text-red-500">*</span>
           </label>
           <input
-            {...register("email", {
-              required: true,
-            })}
-            placeholder="Eg: xyz@gmail.com"
+            {...register("email", { required: true })}
+            placeholder="Eg: example@mail.com"
             id="email"
+            type="email"
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.email && (
-            <span className="text-red-500">*Email Address is required</span>
+            <span className="text-red-500">*Email is required</span>
           )}
         </div>
+
         <div className="mb-4">
           <label htmlFor="linkedin" className="font-bold text-lg">
-            LinkedIn profile <span className="text-red-500">*</span>
+            LinkedIn Profile <span className="text-red-500">*</span>
           </label>
           <input
             {...register("linkedin", { required: true })}
+            placeholder="Your LinkedIn URL"
             id="linkedin"
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.linkedin && (
-            <span className="text-red-500">*LinkedIn profile is required</span>
+            <span className="text-red-500">*LinkedIn is required</span>
           )}
         </div>
-        <div className="mb-8">
+
+        <div className="mb-4">
           <label htmlFor="phone_number" className="font-bold text-lg">
-            Phone number <span className="text-red-500">*</span>
+            Phone Number <span className="text-red-500">*</span>
           </label>
           <input
             {...register("phone_number", { required: true })}
-            placeholder="Eg: +977 98xxxxxxxx"
+            placeholder="Eg: +1234567890"
             id="phone_number"
             className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
           />
           {errors.phone_number && (
-            <span className="text-red-500">*Phone Number is required</span>
+            <span className="text-red-500">*Phone number is required</span>
           )}
         </div>
+
+        {/* Skills Section */}
         <div className="shadow-md rounded-md p-4 mb-8">
-          <label htmlFor="skills" className="font-bold text-lg">
+          <label className="font-bold text-lg">
             Skills <span className="text-red-500">*</span>
           </label>
           {skills.map((skill, index) => (
@@ -281,12 +237,16 @@ export default function QuestionsForm({ onDataChange }: Props) {
                 value={skill.skillName}
                 onChange={(e) => handleSkillChange(index, e.target.value)}
                 placeholder="Eg: Microsoft Word"
-                id="skills"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
               {skill.skillName === "" && (
                 <span className="text-red-500 text-lg">*Skill is required</span>
               )}
+
+              <IoMdRemoveCircle
+                className="text-red-600 cursor-pointer"
+                onClick={() => removeField(setSkills, index)}
+              />
             </div>
           ))}
           <div className="flex justify-center">
@@ -294,10 +254,12 @@ export default function QuestionsForm({ onDataChange }: Props) {
               className="text-red-600 hover:opacity-70 my-2 cursor-pointer"
               onClick={addSkill}
             />
-          </div>{" "}
+          </div>
         </div>
+
+        {/* Tools Section */}
         <div className="shadow-md rounded-md p-4 mb-8">
-          <label htmlFor="tools" className="font-bold text-lg">
+          <label className="font-bold text-lg">
             Tools and Technology <span className="text-red-500">*</span>
           </label>
           {tools.map((tool, index) => (
@@ -306,182 +268,178 @@ export default function QuestionsForm({ onDataChange }: Props) {
                 value={tool.toolName}
                 onChange={(e) => handleToolChange(index, e.target.value)}
                 placeholder="Eg: React"
-                id="tools"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
               />
               {tool.toolName === "" && (
                 <span className="text-red-500 text-lg">*Tool is required</span>
               )}
+              <IoMdRemoveCircle
+                className="text-red-600 cursor-pointer"
+                onClick={() => removeField(setTools, index)}
+              />
             </div>
           ))}
           <div className="flex justify-center">
             <IoMdAddCircle
-              className="text-red-500 hover:opacity-70 my-2 cursor-pointer"
+              className="text-red-600 hover:opacity-70 my-2 cursor-pointer"
               onClick={addTool}
             />
-          </div>{" "}
+          </div>
         </div>
+
+        {/* Experience Section */}
         <div className="shadow-md rounded-md p-4 mb-8">
-          <label htmlFor="experiences" className="font-bold text-lg">
+          <label className="font-bold text-lg">
             Experience <span className="text-red-500">*</span>
           </label>
           {experiences.map((experience, index) => (
             <div key={index} className="my-4 p-6 rounded-lg shadow-md">
               <input
-                value={position}
-                onChange={(e) => setPosition(e.target.value)}
-                placeholder="Enter your position"
-                id="experiences"
+                value={experience.position}
+                onChange={(e) =>
+                  handleExperienceChange(index, {
+                    ...experience,
+                    position: e.target.value,
+                  })
+                }
+                placeholder="Position"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {position === "" && (
-                <span className="text-red-500 text-lg">
-                  *Position is required
-                </span>
-              )}
               <input
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Enter your company name"
-                id="experiences"
+                value={experience.companyName}
+                onChange={(e) =>
+                  handleExperienceChange(index, {
+                    ...experience,
+                    companyName: e.target.value,
+                  })
+                }
+                placeholder="Company Name"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {companyName === "" && (
-                <span className="text-red-500 text-lg">
-                  *Company is required
-                </span>
-              )}
               <input
-                value={joinedDate}
-                onChange={(e) => setJoinedDate(e.target.value)}
-                placeholder="Enter your joined date. Eg: 3rd October, 2024"
-                id="experiences"
+                value={experience.joinedDate}
+                onChange={(e) =>
+                  handleExperienceChange(index, {
+                    ...experience,
+                    joinedDate: e.target.value,
+                  })
+                }
+                placeholder="Joined Date"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {joinedDate === "" && (
-                <span className="text-red-500 text-lg">
-                  *Joined date is required
-                </span>
-              )}
               <input
-                value={leftDate}
-                onChange={(e) => setLeftDate(e.target.value)}
-                placeholder="Enter your left date. Eg: 3rd October, 2025"
-                id="experiences"
+                value={experience.leftDate}
+                onChange={(e) =>
+                  handleExperienceChange(index, {
+                    ...experience,
+                    leftDate: e.target.value,
+                  })
+                }
+                placeholder="Left Date"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {leftDate === "" && (
-                <span className="text-red-500 text-lg">
-                  *Left date is required
-                </span>
-              )}
               <textarea
                 value={experience.shortDescription}
-                rows={3}
                 onChange={(e) =>
-                  handleExperienceChange(
-                    index,
-                    position,
-                    companyName,
-                    joinedDate,
-                    leftDate,
-                    e.target.value
-                  )
+                  handleExperienceChange(index, {
+                    ...experience,
+                    shortDescription: e.target.value,
+                  })
                 }
-                placeholder="Enter your job short description"
-                id="experiences"
+                placeholder="Short Description"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {experience.shortDescription === "" && (
-                <span className="text-red-500 text-lg">
-                  *Job short description is required
-                </span>
-              )}
+              <IoMdRemoveCircle
+                className="text-red-600 cursor-pointer"
+                onClick={() => removeField(setExperiences, index)}
+              />
             </div>
           ))}
           <div className="flex justify-center">
             <IoMdAddCircle
-              className="text-red-500 hover:opacity-70 my-2 cursor-pointer"
+              className="text-red-600 hover:opacity-70 my-2 cursor-pointer"
               onClick={addExperience}
             />
-          </div>{" "}
+          </div>
         </div>
 
+        {/* Education Section */}
         <div className="shadow-md rounded-md p-4 mb-8">
-          <label htmlFor="educations" className="font-bold text-lg">
+          <label className="font-bold text-lg">
             Education <span className="text-red-500">*</span>
           </label>
           {educations.map((education, index) => (
             <div key={index} className="my-4 p-6 rounded-lg shadow-md">
               <input
-                value={course}
-                onChange={(e) => setCourse(e.target.value)}
-                placeholder="Enter your course"
-                id="educations"
+                value={education.course}
+                onChange={(e) =>
+                  handleEducationChange(index, {
+                    ...education,
+                    course: e.target.value,
+                  })
+                }
+                placeholder="Course"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {course === "" && (
-                <span className="text-red-500 text-lg">
-                  *Course is required
-                </span>
-              )}
               <input
-                value={institute}
-                onChange={(e) => setInstitute(e.target.value)}
-                placeholder="Enter your institute"
-                id="educations"
+                value={education.institute}
+                onChange={(e) =>
+                  handleEducationChange(index, {
+                    ...education,
+                    institute: e.target.value,
+                  })
+                }
+                placeholder="Institute"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {institute === "" && (
-                <span className="text-red-500 text-lg">
-                  *Institute is required
-                </span>
-              )}
               <input
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                placeholder="Enter your start date. Eg: 3rd October, 2024"
-                id="educations"
+                value={education.startDate}
+                onChange={(e) =>
+                  handleEducationChange(index, {
+                    ...education,
+                    startDate: e.target.value,
+                  })
+                }
+                placeholder="Start Date"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {startDate === "" && (
-                <span className="text-red-500 text-lg">
-                  *Start date is required
-                </span>
-              )}
               <input
                 value={education.endDate}
                 onChange={(e) =>
-                  handleEducationChange(
-                    index,
-                    course,
-                    institute,
-                    startDate,
-                    e.target.value
-                  )
+                  handleEducationChange(index, {
+                    ...education,
+                    endDate: e.target.value,
+                  })
                 }
-                placeholder="Enter your left date. Eg: 3rd October, 2025"
-                id="educations"
+                placeholder="End Date"
                 className="border border-gray-400 px-2 py-2 my-1 rounded-md w-full"
+                required
               />
-              {education.endDate === "" && (
-                <span className="text-red-500 text-lg">
-                  *End date is required
-                </span>
-              )}
+              <IoMdRemoveCircle
+                className="text-red-600 cursor-pointer"
+                onClick={() => removeField(setEducations, index)}
+              />
             </div>
           ))}
           <div className="flex justify-center">
             <IoMdAddCircle
-              className="text-red-500 hover:opacity-70 my-2 cursor-pointer"
+              className="text-red-600 hover:opacity-70 my-2 cursor-pointer"
               onClick={addEducation}
             />
-          </div>{" "}
+          </div>
         </div>
 
         <button
           type="submit"
-          className="bg-red-500 hover:opacity-70 text-white px-4 py-2 rounded-full"
+          className="bg-resumeBlue_1 hover:opacity-70 text-white px-4 py-2 rounded-lg"
         >
           Submit
         </button>
