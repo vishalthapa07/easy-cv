@@ -1,5 +1,7 @@
 "use client";
+import Logout from "@/app/forms/logout";
 import { useScroll, useTransform, motion } from "framer-motion";
+import { Session } from "next-auth";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -7,7 +9,13 @@ interface TimelineEntry {
   content: React.ReactNode;
 }
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({
+  data,
+  session,
+}: {
+  data: TimelineEntry[];
+  session: Session | null;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -33,15 +41,33 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="font-bold text-lg lg:text-4xl mb-4 text-black dark:text-white max-w-4xl">
-          Start your journey with{" "}
-          <span className="font-bold text-resumeBlue_1 animate-pulse">
-            easy CV
-          </span>
-        </h2>
-        <p className="font-medium text-neutral-700 dark:text-neutral-300 text-sm lg:text-base max-w-sm">
-          Craft your future with confidence
-        </p>
+        <div className="flex items-center">
+          <img
+            src={session?.user?.image || ""}
+            alt={session?.user?.name || "icon"}
+            className="rounded-full mr-2 mb-2 h-20"
+          />
+          <div>
+            <h2 className="font-bold text-lg lg:text-4xl mb-4 text-black dark:text-white max-w-4xl">
+              Start your journey with{" "}
+              <span className="font-bold text-resumeBlue_1 animate-pulse">
+                easy CV
+              </span>
+            </h2>
+            <p className="font-medium text-neutral-700 dark:text-neutral-300 text-sm lg:text-base max-w-sm">
+              Craft your future with confidence
+            </p>
+          </div>
+        </div>
+
+        <div className="w-20 pt-2 hover:opacity-70">
+          <div className="relative z-10 flex w-full cursor-pointer items-center overflow-hidden rounded-xl border border-resumeBlue_1 p-[1.5px]">
+            <div className="animate-rotate absolute inset-0 h-full w-full rounded-full bg-[conic-gradient(#0ea5e9_20deg,transparent_120deg)]"></div>
+            <div className="relative z-20 flex justify-center w-full rounded-[0.60rem] bg-white text-black p-2">
+              <Logout />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">

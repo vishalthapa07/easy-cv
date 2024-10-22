@@ -3,8 +3,15 @@ import { TInputs } from "../forms/questions-form ";
 import { useReactToPrint } from "react-to-print";
 import { FaDownload } from "react-icons/fa6";
 import { printPageStyle } from "../constants/document-print";
+import { Session } from "next-auth";
 
-const Resume1 = ({ data }: { data: TInputs }) => {
+const Resume1 = ({
+  data,
+  session,
+}: {
+  data: TInputs;
+  session: Session | null;
+}) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({
     contentRef,
@@ -34,6 +41,11 @@ const Resume1 = ({ data }: { data: TInputs }) => {
         <div ref={contentRef}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 px-12 pt-12 rounded-t-lg">
             <div>
+              <img
+                src={session?.user?.image || ""}
+                alt={session?.user?.name || "icon"}
+                className="rounded-full mb-2 h-20"
+              />
               <h1 className="font-semibold text-2xl text-resumeBlack_1 mb-2">
                 {data.name}
                 <br />
